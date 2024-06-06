@@ -1,5 +1,5 @@
-name: Hamfisted
-description: Trainiere für die Amateurfunkprüfung
+name: HamfistedCN
+description: Prepare for the China HAM radio license exam
 publish_to: 'none'
 
 version: 0.1.7+17
@@ -13,17 +13,14 @@ dependencies:
   async: ^2.11.0
   cupertino_icons: ^1.0.2
   flutter_html: ^3.0.0-beta.2
-  flutter_svg: ^2.0.10+1
   get_it: ^7.6.4
   google_fonts: ^6.1.0
   hive_flutter: ^1.1.0
   introduction_screen: ^3.1.12
-  jovial_svg: ^1.1.20
   package_info_plus: ^4.2.0
   provider: ^6.0.5
   path_provider: ^2.1.1
   url_launcher: ^6.1.14
-  vector_graphics_compiler: ^1.1.11+1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
@@ -35,8 +32,6 @@ flutter:
   uses-material-design: true
   assets:
     - data/
-    - data/2024/
-    - data/2024/tex/
     - assets/
     - fonts/
   fonts:
@@ -50,16 +45,6 @@ flutter:
         - asset: fonts/AlegreyaSans-BoldItalic.ttf
           style: italic
           weight: 700
-    # - family: CharterBT
-    #   fonts:
-    #     - asset: fonts/CharterBT-Roman.otf
-    #     - asset: fonts/CharterBT-Bold.otf
-    #       weight: 700
-    #     - asset: fonts/CharterBT-Italic.otf
-    #       style: italic
-    #     - asset: fonts/CharterBT-BoldItalic.otf
-    #       style: italic
-    #       weight: 700
 
 flutter_launcher_icons:
   ios: true

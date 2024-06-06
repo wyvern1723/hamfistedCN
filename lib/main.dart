@@ -2,12 +2,8 @@ import 'dart:developer' as developer;
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:introduction_screen/introduction_screen.dart';
-import 'package:jovial_svg/jovial_svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,15 +16,6 @@ const PRIMARY = Color(0xff1d5479);
 const double MAX_WIDTH = 400;
 
 const double INTRO_BOTTOM = 220;
-
-const List<String> introTitles = [
-  "Lerne für deine Amateurfunkprüfung",
-  "Kapitel auswählen und üben",
-  "Trainiere die Fragen",
-  "Trainiere die Fragen",
-  "Trainiere die Fragen",
-  "Trainiere die Fragen",
-];
 
 const List DECAY = [
   1000 * 60 * 60 * 24 * 21,
@@ -56,17 +43,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    //final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
-      title: 'Amateurfunkprüfung',
+      title: 'hamfistedCN',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // useMaterial3: true,
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: PRIMARY,
         ),
-        textTheme: GoogleFonts.alegreyaSansTextTheme(textTheme),
-        // fontFamily: 'BitstreamCharter',
+        //textTheme: GoogleFonts.alegreyaSansTextTheme(textTheme),
       ),
       home: const Overview(),
       routes: {
@@ -86,76 +72,6 @@ class Overview extends StatefulWidget {
 }
 
 class _OverviewState extends State<Overview> with TickerProviderStateMixin {
-  String oldTitle = "";
-  String newTitle = "";
-  bool animatingForward = true;
-  int oldPage = 0;
-  late final AnimationController _animationControllerHeading =
-      AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-  late final AnimationController _animationControllerCat = AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-  late final AnimationController _animationControllerOverview =
-      AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-  late final AnimationController _animationControllerQuiz = AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-  late final AnimationController _animationControllerSpotSize =
-      AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-  late final AnimationController _animationControllerSpotShift1 =
-      AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-  late final AnimationController _animationControllerSpotShift2 =
-      AnimationController(
-    duration: const Duration(milliseconds: 500),
-    vsync: this,
-  );
-
-  @override
-  void initState() {
-    resetIntro();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _animationControllerHeading.dispose();
-    _animationControllerCat.dispose();
-    _animationControllerOverview.dispose();
-    _animationControllerQuiz.dispose();
-    _animationControllerSpotSize.dispose();
-    _animationControllerSpotShift1.dispose();
-    _animationControllerSpotShift2.dispose();
-    super.dispose();
-  }
-
-  void resetIntro() {
-    oldTitle = introTitles[0];
-    newTitle = introTitles[0];
-    animatingForward = true;
-    oldPage = 0;
-    _animationControllerHeading.value = 0.0;
-    _animationControllerCat.value = 1.0;
-    _animationControllerOverview.value = 0.0;
-    _animationControllerQuiz.value = 0.0;
-    _animationControllerSpotSize.value = 0.0;
-    _animationControllerSpotShift1.value = 0.0;
-    _animationControllerSpotShift2.value = 0.0;
-  }
-
   Future<void> clearProgress() async {
     await GlobalData.box.clear();
     setState(() {});
@@ -260,572 +176,12 @@ class _OverviewState extends State<Overview> with TickerProviderStateMixin {
     return cards;
   }
 
-  Widget introScreen() {
-    List<Widget> cards = [];
-    List<int> answerIndex = [1, 3, 0, 2];
-    List<Color> answerColor = [
-      Colors.transparent,
-      Colors.transparent,
-      Colors.transparent,
-      Colors.transparent
-    ];
-    List<String> answers = [
-      '42*10<sup>-3</sup> A.',
-      '42*10<sup>3</sup> A.',
-      '42*10<sup>-2</sup> A.',
-      '42*10<sup>-1</sup> A.',
-    ];
-    cards.add(Card(
-      surfaceTintColor: Colors.transparent,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: ListTile(
-        title: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Html(
-            data: "<b>TA101</b>&nbsp;&nbsp;&nbsp;&nbsp;0,042 A entspricht",
-            style: {'body': Style(margin: Margins.zero)},
-          ),
-        ),
-      ),
-    ));
-    cards.add(const Divider());
-
-    for (int ti = 0; ti < 4; ti++) {
-      int i = answerIndex[ti];
-      cards.add(Card(
-        surfaceTintColor: Colors.transparent,
-        elevation: 1,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: answerColor[i],
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Center(
-            child: ListTile(
-              horizontalTitleGap: 0,
-              titleAlignment: ListTileTitleAlignment.top,
-              leading: Transform.translate(
-                offset: const Offset(-2, 5),
-                child: CircleAvatar(
-                  backgroundColor: answerColor[i] == Colors.transparent
-                      ? Color.lerp(PRIMARY, Colors.white, 0.8)
-                      : answerColor[i],
-                  radius: 15,
-                  child: answerColor[i] == GREEN
-                      ? const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 16,
-                        )
-                      : answerColor[i] == RED
-                          ? const Icon(
-                              Icons.clear,
-                              color: Colors.white,
-                              size: 16,
-                            )
-                          : Text(
-                              String.fromCharCode(65 + ti),
-                              style: GoogleFonts.alegreyaSans(
-                                  fontSize: 14,
-                                  color: answerColor[i] == Colors.transparent
-                                      ? Colors.black87
-                                      : Colors.white,
-                                  fontWeight:
-                                      answerColor[i] == Colors.transparent
-                                          ? FontWeight.normal
-                                          : FontWeight.bold),
-                            ),
-                ),
-              ),
-              title: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Html(
-                  data: answers[i].toString().replaceAll('*', ' ⋅ '),
-                  style: {'body': Style(margin: Margins.zero)},
-                ),
-              ),
-            ),
-          ),
-        ),
-      ));
-    }
-    return LayoutBuilder(builder: (context, constraints) {
-      return Stack(
-        children: [
-          Container(color: PRIMARY),
-          SafeArea(
-            child: Container(
-              color: Color.lerp(PRIMARY, Colors.white, 0.9),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: INTRO_BOTTOM + 64),
-                  child: Stack(
-                    children: [
-                      AnimatedBuilder(
-                          animation: _animationControllerCat,
-                          builder: (context, child) {
-                            return Opacity(
-                              opacity: _animationControllerCat.value,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Color.fromARGB(255, 109, 195, 231),
-                                        Color.fromARGB(255, 248, 220, 255)
-                                      ]),
-                                ),
-                              ),
-                            );
-                          }),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: LayoutBuilder(builder: (context, constraints) {
-                          return AnimatedBuilder(
-                              animation: _animationControllerCat,
-                              builder: (context, child) {
-                                return Transform.translate(
-                                  offset: Offset(
-                                      0,
-                                      (1.0 - _animationControllerCat.value) *
-                                          constraints.maxHeight),
-                                  child: Image(
-                                      image: const AssetImage(
-                                          'assets/stack_of_books.png'),
-                                      height: constraints.maxHeight * 0.7),
-                                );
-                              });
-                        }),
-                      ),
-                      Material(
-                        color: Colors.transparent,
-                        child: AnimatedBuilder(
-                            animation: _animationControllerOverview,
-                            builder: (context, child) {
-                              return Transform.translate(
-                                offset: Offset(
-                                    0,
-                                    -(1.0 -
-                                            _animationControllerOverview
-                                                .value) *
-                                        constraints.maxHeight),
-                                child: SafeArea(
-                                  child: Container(
-                                    color:
-                                        Color.lerp(PRIMARY, Colors.white, 0.9),
-                                    child: SingleChildScrollView(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      child: Column(
-                                        children: getChapterCards(
-                                            hid: '2024/TA', demo: true),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
-                      AnimatedBuilder(
-                          animation: _animationControllerQuiz,
-                          builder: (context, child) {
-                            return Stack(
-                              children: [
-                                Transform.translate(
-                                  offset: Offset(
-                                      0,
-                                      (1.0 - _animationControllerQuiz.value) *
-                                          constraints.maxHeight),
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: SafeArea(
-                                      child: Container(
-                                        color: Color.lerp(
-                                            PRIMARY, Colors.white, 0.9),
-                                        child: SingleChildScrollView(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          child: Column(
-                                            children: cards,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Transform.translate(
-                                  offset: Offset(
-                                      0,
-                                      (1.0 - _animationControllerQuiz.value) *
-                                          120),
-                                  child: BottomMenu(
-                                    qid: 'TA101E',
-                                    feelingUnsureWidget: Switch(
-                                      value: false,
-                                      activeColor: Colors.red[900],
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                Transform.translate(
-                                  offset: Offset(
-                                      0,
-                                      (1.0 - _animationControllerQuiz.value) *
-                                          120),
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: LayoutBuilder(
-                                        builder: (context, constraints) {
-                                      return Transform.translate(
-                                        offset: Offset(
-                                            -1 * constraints.maxWidth / 3, 60),
-                                        child: AnimatedBuilder(
-                                            animation:
-                                                _animationControllerSpotShift2,
-                                            builder: (context, child) {
-                                              return AnimatedBuilder(
-                                                  animation:
-                                                      _animationControllerSpotShift1,
-                                                  builder: (context, child) {
-                                                    return AnimatedBuilder(
-                                                        animation:
-                                                            _animationControllerSpotSize,
-                                                        builder:
-                                                            (context, child) {
-                                                          return Opacity(
-                                                            opacity:
-                                                                _animationControllerSpotSize
-                                                                    .value,
-                                                            child: Transform
-                                                                .translate(
-                                                              offset: Offset(
-                                                                  constraints
-                                                                          .maxWidth /
-                                                                      3 *
-                                                                      (_animationControllerSpotShift1
-                                                                              .value +
-                                                                          _animationControllerSpotShift2
-                                                                              .value),
-                                                                  0),
-                                                              child: Transform
-                                                                  .scale(
-                                                                scale: 4.0 -
-                                                                    3.0 *
-                                                                        _animationControllerSpotSize
-                                                                            .value,
-                                                                child: ClipPath(
-                                                                  clipper:
-                                                                      MyClipper(),
-                                                                  child: Container(
-                                                                      decoration: BoxDecoration(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(1000),
-                                                                        gradient:
-                                                                            const RadialGradient(
-                                                                          colors: [
-                                                                            Color(0x80000000),
-                                                                            Color(0x00000000),
-                                                                          ],
-                                                                          stops: [
-                                                                            0.0,
-                                                                            1.0
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      width: 200,
-                                                                      height: 200),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        });
-                                                  });
-                                            }),
-                                      );
-                                    }),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: 8,
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: <Color>[
-                              Color(0x00000000),
-                              Color(0x30000000),
-                            ],
-                          )),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 8,
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          stops: [0, 1],
-                          colors: [Color(0x00000000), Color(0x20000000)],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter)),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: INTRO_BOTTOM),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 28, left: 8.0, right: 8.0, bottom: 8.0),
-                      child: AnimatedBuilder(
-                          animation: _animationControllerHeading,
-                          builder: (context, child) {
-                            double direction = 1.0;
-                            if (!animatingForward) direction = -1.0;
-                            return Stack(
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Transform.translate(
-                                    offset: Offset(
-                                        -_animationControllerHeading.value *
-                                            constraints.maxWidth *
-                                            direction,
-                                        0),
-                                    child: Text(
-                                      oldTitle,
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Transform.translate(
-                                    offset: Offset(
-                                        (1.0 -
-                                                _animationControllerHeading
-                                                    .value) *
-                                            constraints.maxWidth *
-                                            direction,
-                                        0),
-                                    child: Text(
-                                      newTitle,
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          IntroductionScreen(
-            next: const Text("Nächster Tipp"),
-            done: const Text("Los geht's!"),
-            onDone: () {
-              setState(() {
-                GlobalData.box.put('shown_intro', true);
-              });
-            },
-            dotsDecorator: DotsDecorator(
-              size: const Size.square(10.0),
-              activeSize: const Size(20.0, 10.0),
-              activeColor: PRIMARY,
-              color: Colors.black26,
-              spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-              activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0)),
-            ),
-            curve: Curves.easeInOutCubic,
-            onChange: (page) {
-              animatingForward = (page > oldPage);
-              if (introTitles[page] != introTitles[oldPage]) {
-                oldTitle = introTitles[oldPage];
-                newTitle = introTitles[page];
-                _animationControllerHeading.value = 0;
-                _animationControllerHeading
-                    .animateTo(1.0, curve: Curves.easeInOutCubic)
-                    .then((value) {});
-              }
-              _animationControllerCat.animateTo((page == 0) ? 1.0 : 0.0,
-                  curve: Curves.easeInOutCubic);
-              _animationControllerOverview.animateTo((page == 1) ? 1.0 : 0.0,
-                  curve: Curves.easeInOutCubic);
-              _animationControllerQuiz.animateTo((page >= 2) ? 1.0 : 0.0,
-                  curve: Curves.easeInOutCubic);
-              _animationControllerSpotSize.animateTo((page >= 3) ? 1.0 : 0.0,
-                  curve: Curves.easeInOutCubic);
-              _animationControllerSpotShift1.animateTo((page >= 4) ? 1.0 : 0.0,
-                  curve: Curves.easeInOutCubic);
-              _animationControllerSpotShift2.animateTo((page >= 5) ? 1.0 : 0.0,
-                  curve: Curves.easeInOutCubic);
-
-              oldPage = page;
-            },
-            isProgressTap: false,
-            globalBackgroundColor: Colors.transparent,
-            rawPages: const [
-              IntroScreenColumn(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Schau dir kurz an, wie es funktioniert.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IntroScreenColumn(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Such dir ein Kapitel aus und beantworte die Fragen.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Fortschrittsbalken zeigen dir an, wie viele der Fragen du schon korrekt beantwortet hast.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Die Fortschrittsbalken verblassen nach einigen Tagen.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IntroScreenColumn(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Wenn du dir sicher bist, kannst du die richtige Antwort einfach antippen.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IntroScreenColumn(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Falls du dir unsicher bist, tippe auf den Schalter unten links (oder tippe lang auf eine Antwort).",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Du kannst dann in Ruhe alle Antworten aufdecken, bis du die richtige Antwort gefunden hast. Du bekommst die Frage später noch einmal gezeigt.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IntroScreenColumn(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Zu vielen der Prüfungsfragen gibt es Hilfen auf der DARC-Website. Tippe auf »Hilfestellung«, wenn du mit einer Frage Probleme hast.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Du wirst dann direkt an die richtige Stelle auf der DARC-Website geleitet (manchmal musst du etwas nach oben scrollen, um eine Erklärung zu finden).",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              IntroScreenColumn(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Tippe auf »Frage überspringen«, wenn du eine Frage gerade nicht beantworten kannst oder möchtest.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     if (!GlobalData.ready) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    if (GlobalData.box.get('shown_intro') != true) {
-      return introScreen();
-    }
+    //delete
     String hid = '';
     if (ModalRoute.of(context) != null) {
       hid = (ModalRoute.of(context)!.settings.arguments ?? '').toString();
@@ -839,31 +195,25 @@ class _OverviewState extends State<Overview> with TickerProviderStateMixin {
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Fortschritt löschen'),
+            title: const Text('删除学习进度'),
             content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('Möchtest du deinen gesamten Fortschritt löschen?'),
+                  Text('您确定要删除所有学习进度吗？'),
                 ],
               ),
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Abbrechen'),
+                child: const Text('取消'),
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: const Text('Löschen'),
+                child: const Text('删除'),
                 onPressed: () async {
-                  var shownIntro = GlobalData.box.get('shown_intro');
                   await clearProgress();
-                  if (shownIntro != null) {
-                    setState(() {
-                      GlobalData.box.put('shown_intro', shownIntro);
-                    });
-                  }
                   Navigator.of(context).pop();
                 },
               ),
@@ -883,28 +233,15 @@ class _OverviewState extends State<Overview> with TickerProviderStateMixin {
                 PopupMenuButton(onSelected: (value) async {
                   if (value == 'clear_progress') {
                     showMyDialog(context);
-                  } else if (value == 'show_intro') {
-                    await GlobalData.box.delete('shown_intro');
-                    setState(() {
-                      resetIntro();
-                    });
                   } else if (value == 'about') {
                     Navigator.of(context).pushNamed('/about');
                   }
                 }, itemBuilder: (itemBuilder) {
                   return <PopupMenuEntry>[
                     const PopupMenuItem<String>(
-                      value: "show_intro",
-                      child: ListTile(
-                        title: Text("Einführung wiederholen"),
-                        visualDensity: VisualDensity.compact,
-                        leading: Icon(Icons.restart_alt),
-                      ),
-                    ),
-                    const PopupMenuItem<String>(
                       value: "clear_progress",
                       child: ListTile(
-                        title: Text("Fortschritt löschen"),
+                        title: Text("删除学习进度"),
                         visualDensity: VisualDensity.compact,
                         leading: Icon(Icons.delete),
                       ),
@@ -913,7 +250,7 @@ class _OverviewState extends State<Overview> with TickerProviderStateMixin {
                     const PopupMenuItem<String>(
                       value: "about",
                       child: ListTile(
-                        title: Text("Über diese App"),
+                        title: Text("关于 App"),
                         visualDensity: VisualDensity.compact,
                         leading: Icon(Icons.info),
                       ),
@@ -922,8 +259,8 @@ class _OverviewState extends State<Overview> with TickerProviderStateMixin {
                 })
               ]
             : null,
-        title: Text(
-            (GlobalData.questions!['headings'][hid] ?? 'Amateurfunkprüfung')),
+        title:
+            Text((GlobalData.questions!['headings'][hid] ?? '业余电台操作证书考试题库练习')),
       ),
       body: ListView(
         children: cards,
@@ -936,7 +273,8 @@ class _OverviewState extends State<Overview> with TickerProviderStateMixin {
               ]),
               child: TextButton(
                 child: Text(
-                    "Alle ${(GlobalData.questions!['questions_for_hid'][hid] ?? []).length} Fragen üben"),
+                    "练习所有 ${(GlobalData.questions!['questions_for_hid'][hid] ?? []).length} 道题",
+                    style: GoogleFonts.alegreyaSans()),
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed('/quiz', arguments: hid)
@@ -985,74 +323,9 @@ class _QuizState extends State<Quiz> with TickerProviderStateMixin {
     vsync: this,
   );
 
-  // late final PlatformWebViewControllerCreationParams params;
-  // late final WebViewController wvController;
-
   @override
   void initState() {
     super.initState();
-//     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-//       params = WebKitWebViewControllerCreationParams(
-//         allowsInlineMediaPlayback: true,
-//         mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-//       );
-//     } else {
-//       params = const PlatformWebViewControllerCreationParams();
-//     }
-
-//     wvController = WebViewController.fromPlatformCreationParams(params);
-//     wvController
-//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-//       ..setBackgroundColor(const Color(0x00000000))
-//       ..setNavigationDelegate(
-//         NavigationDelegate(
-//           onProgress: (int progress) {
-//             debugPrint('WebView is loading (progress : $progress%)');
-//           },
-//           onPageStarted: (String url) {
-//             debugPrint('Page started loading: $url');
-//           },
-//           onPageFinished: (String url) {
-//             debugPrint('Page finished loading: $url');
-//           },
-//           onWebResourceError: (WebResourceError error) {
-//             debugPrint('''
-// Page resource error:
-//   code: ${error.errorCode}
-//   description: ${error.description}
-//   errorType: ${error.errorType}
-//   isForMainFrame: ${error.isForMainFrame}
-//           ''');
-//           },
-//           onNavigationRequest: (NavigationRequest request) {
-//             if (request.url.startsWith('https://www.youtube.com/')) {
-//               debugPrint('blocking navigation to ${request.url}');
-//               return NavigationDecision.prevent;
-//             }
-//             debugPrint('allowing navigation to ${request.url}');
-//             return NavigationDecision.navigate;
-//           },
-//           onUrlChange: (UrlChange change) {
-//             debugPrint('url change to ${change.url}');
-//           },
-//         ),
-//       )
-//       ..addJavaScriptChannel(
-//         'Toaster',
-//         onMessageReceived: (JavaScriptMessage message) {
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             SnackBar(content: Text(message.message)),
-//           );
-//         },
-//       );
-
-//     // #docregion platform_features
-//     if (wvController.platform is AndroidWebViewController) {
-//       AndroidWebViewController.enableDebugging(true);
-//       (wvController.platform as AndroidWebViewController)
-//           .setMediaPlaybackRequiresUserGesture(false);
-//     }
-//     wvController.loadHtmlString('hello');
   }
 
   @override
@@ -1254,65 +527,12 @@ class _QuizState extends State<Quiz> with TickerProviderStateMixin {
               data:
                   "<b>$qidDisplay</b>&nbsp;&nbsp;&nbsp;&nbsp;${GlobalData.questions!['questions'][qid]['challenge']}",
               style: {
-                'body': Style(margin: Margins.zero, fontSize: FontSize(16))
+                'body': Style(
+                  margin: Margins.zero,
+                  fontSize: FontSize(16),
+                ),
+                "b": Style(fontFamily: GoogleFonts.alegreyaSans().fontFamily)
               },
-            ),
-          ),
-        ));
-      }
-
-      if (GlobalData.questions!['questions'][qid]['challenge_tex'] != null) {
-        developer.log(GlobalData.questions!['questions'][qid]['challenge_tex']);
-        challengeParts.add(Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
-          child: SizedBox(
-            width: cwidth,
-            height: max(
-                60,
-                cwidth /
-                    GlobalData.questions!['questions'][qid]
-                        ['challenge_tex_width'] *
-                    GlobalData.questions!['questions'][qid]
-                        ['challenge_tex_height']),
-            child: FutureBuilder(
-                future: ScalableImage.fromSIAsset(rootBundle,
-                    "data/2024/tex/${GlobalData.questions!['questions'][qid]['challenge_tex']}.si"),
-                builder: (context, snapshot) {
-                  developer.log(
-                      GlobalData.questions!['questions'][qid]['challenge_tex']);
-                  return ScalableImageWidget(
-                    si: snapshot.requireData,
-                  );
-                }),
-          ),
-        ));
-      }
-
-      if (GlobalData.questions!['questions'][qid]['challenge_svg'] != null) {
-        var aspect = GlobalData.questions!['questions'][qid]
-                ['challenge_svg_width'] /
-            GlobalData.questions!['questions'][qid]['challenge_svg_height'];
-        var width = (cwidth) *
-            min(GlobalData.questions!['questions'][qid]['challenge_svg_width'],
-                250) /
-            250;
-        var height = width / aspect;
-        challengeParts.add(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SvgPicture.asset(
-            "data/2024/${GlobalData.questions!['questions'][qid]['challenge_svg']}",
-            width: width,
-            height: height,
-          ),
-        ));
-      }
-
-      if (GlobalData.questions!['questions'][qid]['challenge_png'] != null) {
-        challengeParts.add(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image(
-            image: AssetImage(
-              "data/2024/${GlobalData.questions!['questions'][qid]['challenge_png']}",
             ),
           ),
         ));
@@ -1472,73 +692,23 @@ class _QuizState extends State<Quiz> with TickerProviderStateMixin {
                                               Container(
                                                 width:
                                                     cwidth * (1.0 - 0.045) - 70,
-                                                child:
-                                                    (GlobalData.questions!['questions'][qid]
-                                                                    [
-                                                                    'answers_tex'] ==
-                                                                null &&
-                                                            GlobalData.questions!['questions']
-                                                                        [qid][
-                                                                    'answers_svg'] ==
-                                                                null)
-                                                        ? Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        13.0),
-                                                            child: Html(
-                                                              data: GlobalData
-                                                                  .questions![
-                                                                      'questions']
-                                                                      [qid][
-                                                                      'answers']
-                                                                      [i]
-                                                                  .toString()
-                                                                  .replaceAll(
-                                                                      '*',
-                                                                      ' ⋅ '),
-                                                              style: {
-                                                                'body': Style(
-                                                                  margin:
-                                                                      Margins
-                                                                          .zero,
-                                                                ),
-                                                              },
-                                                            ),
-                                                          )
-                                                        : (GlobalData.questions!['questions']
-                                                                        [qid][
-                                                                    'answers_svg'] ==
-                                                                null
-                                                            ? LayoutBuilder(
-                                                                builder: (context,
-                                                                    constraints) {
-                                                                return Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
-                                                                          top:
-                                                                              6,
-                                                                          bottom:
-                                                                              6),
-                                                                  child: SizedBox(
-                                                                      width: constraints.maxWidth,
-                                                                      height: constraints.maxWidth / GlobalData.questions!['questions'][qid]['answers_tex_width'][i] * GlobalData.questions!['questions'][qid]['answers_tex_height'][i],
-                                                                      child: FutureBuilder(
-                                                                          future: ScalableImage.fromSIAsset(rootBundle, "data/2024/tex/${GlobalData.questions!['questions'][qid]['answers_tex'][i]}.si"),
-                                                                          builder: (context, snapshot) {
-                                                                            return ScalableImageWidget(
-                                                                              si: snapshot.requireData,
-                                                                            );
-                                                                          })),
-                                                                );
-                                                              })
-                                                            : SvgPicture.asset(
-                                                                "data/2024/${GlobalData.questions!['questions'][qid]['answers_svg'][i]}",
-                                                                width: cwidth *
-                                                                    0.86,
-                                                              )),
+                                                child: (Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 13.0),
+                                                  child: Html(
+                                                    data: GlobalData
+                                                        .questions!['questions']
+                                                            [qid]['answers'][i]
+                                                        .toString()
+                                                        .replaceAll('*', ' ⋅ '),
+                                                    style: {
+                                                      'body': Style(
+                                                        margin: Margins.zero,
+                                                      ),
+                                                    },
+                                                  ),
+                                                )),
                                               ),
                                             ],
                                           ),
@@ -1573,14 +743,17 @@ class _QuizState extends State<Quiz> with TickerProviderStateMixin {
           ),
           BottomMenu(
             qid: qid!,
-            feelingUnsureWidget: Switch(
-              value: unsure,
-              activeColor: Colors.red[900],
-              onChanged: (value) {
-                if (!unsure) {
-                  setState(() => unsure = value);
-                }
-              },
+            feelingUnsureWidget: Transform.scale(
+              scale: 1,
+              child: Switch(
+                value: unsure,
+                activeColor: Colors.red[900],
+                onChanged: (value) {
+                  if (!unsure) {
+                    setState(() => unsure = value);
+                  }
+                },
+              ),
             ),
             onFeelingUnsure: () {
               unsure = true;
@@ -1624,7 +797,7 @@ class _QuizState extends State<Quiz> with TickerProviderStateMixin {
                   },
                   icon: const Icon(Icons.check),
                   label: const Text(
-                    "Alle Fragen beantwortet!",
+                    "已回答所有问题！",
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.normal,
@@ -1667,20 +840,38 @@ class _AboutState extends State<About> {
     return Scaffold(
       backgroundColor: Color.lerp(PRIMARY, Colors.white, 0.9),
       appBar: AppBar(
-        title: const Text("Über diese App"),
+        title: const Text("关于 App"),
         backgroundColor: PRIMARY,
         foregroundColor: Colors.white,
       ),
-      body: Html(
-        data: "<h2>Hamfisted</h2>"
-            "<p>App zur Vorbereitung auf die Amateurfunkprüfung</p>"
-            "<p>Die Fragen von 2007 stammen aus der AFUTrainer-App von <a href='http://oliver-saal.de/software/afutrainer/download.php'>Oliver Saal</a>. Die Fragen von 2024 stammen von der Bundesnetzagentur (3. Auflage, März 2024). Grafiken stammen von <a href='https://freepik.com'>freepik.com</a>. Implementiert von Michael Specht.</p>"
-            "<p><b>Version:</b> ${version}</p>"
-            "<p><b>Quelltext:</b> <a href='https://github.com/specht/hamfisted'>https://github.com/specht/hamfisted</a></p>"
-            "<p><b>Kontakt:</b> <a href='mailto:specht@gymnasiumsteglitz.de'>specht@gymnasiumsteglitz.de</a></p>",
-        onLinkTap: (url, attributes, element) {
-          launchUrl(Uri.parse(url!));
-        },
+      body: SingleChildScrollView(
+        child: Html(
+          data: "<h2>Hamfisted</h2>"
+              "<p>App zur Vorbereitung auf die Amateurfunkprüfung</p>"
+              "<p>Die Fragen von 2007 stammen aus der AFUTrainer-App von <a href='http://oliver-saal.de/software/afutrainer/download.php'>Oliver Saal</a>. Die Fragen von 2024 stammen von der Bundesnetzagentur (3. Auflage, März 2024). Grafiken stammen von <a href='https://freepik.com'>freepik.com</a>. Implementiert von Michael Specht.</p>"
+              "<p><b>Version:</b> ${version}</p>"
+              "<p><b>Quelltext:</b> <a href='https://github.com/specht/hamfisted'>https://github.com/specht/hamfisted</a></p>"
+              "<p><b>Kontakt:</b> <a href='mailto:specht@gymnasiumsteglitz.de'>specht@gymnasiumsteglitz.de</a></p>"
+              "<h3>机翻：</h3>"
+              "<p>一个用于准备业余无线电考试的应用程序</p>"
+              "<p>2007 年的问题来自 <a href='http://oliver-saal.de/software/afutrainer/download.php'>Oliver Saal</a> 的 AFUTrainer-App。 2024 年的题目来自 Bundesnetzagentur (3. Auflage, März 2024)。 图片来自 <a href='https://freepik.com'>freepik.com</a>。 由 Michael Specht 实现。</p>"
+              "<p><b>版本：</b> ${version}</p>"
+              "<p><b>资料来源：</b> <a href='https://github.com/specht/hamfisted'>https://github.com/specht/hamfisted</a></p>"
+              "<p><b>联络：</b> <a href='mailto:specht@gymnasiumsteglitz.de'>specht@gymnasiumsteglitz.de</a></p>"
+              "<hr />"
+              "<h2>HamfistedCN</h2>"
+              "<p>基于 <a href='https://github.com/specht'>Michael Specht</a> 的 <a href='https://github.com/specht/hamfisted'>Hamfisted</a> 修改</p>"
+              "<p>替换中国 A、B、C 类业余无线电台操作技术能力验证题库</p>"
+              "<p><b>版本：</b> ${version}</p>"
+              "<p><b>资料来源：</b> <a href='https://github.com/specht/hamfisted'>中国无线电协会业余无线电分会(CRAC)</a></p>"
+              "<p><b>项目主页：</b> <a href='https://github.com/wyvern1723/hamfistedCN'>https://github.com/wyvern1723/hamfistedCN</a></p>",
+          style: {
+            'body': Style(fontFamily: GoogleFonts.alegreyaSans().fontFamily)
+          },
+          onLinkTap: (url, attributes, element) {
+            launchUrl(Uri.parse(url!));
+          },
+        ),
       ),
     );
   }
@@ -1733,7 +924,7 @@ class _BottomMenuState extends State<BottomMenu> {
                               },
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 8, left: 8, right: 8, bottom: 12),
+                              top: 8, left: 8, right: 8, bottom: 16),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -1742,9 +933,9 @@ class _BottomMenuState extends State<BottomMenu> {
                                 child: widget.feelingUnsureWidget,
                               ),
                               const Text(
-                                "Ich bin mir\nunsicher",
+                                "存疑",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(height: 1.2),
+                                style: TextStyle(height: 1),
                               ),
                             ],
                           ),
@@ -1767,17 +958,17 @@ class _BottomMenuState extends State<BottomMenu> {
                               : 1.0,
                           child: const Padding(
                             padding: EdgeInsets.only(
-                                top: 8, left: 8, right: 8, bottom: 12),
+                                top: 8, left: 8, right: 8, bottom: 16),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                    height: 42,
+                                    height: 45,
                                     child: Icon(Icons.help_outline)),
                                 Text(
-                                  "Hilfestellung\nzu dieser Frage",
+                                  "帮助",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(height: 1.2),
+                                  style: TextStyle(height: 1),
                                 ),
                               ],
                             ),
@@ -1795,17 +986,17 @@ class _BottomMenuState extends State<BottomMenu> {
                               },
                         child: const Padding(
                           padding: EdgeInsets.only(
-                              top: 8, left: 8, right: 8, bottom: 12),
+                              top: 8, left: 8, right: 8, bottom: 16),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
-                                  height: 42,
+                                  height: 45,
                                   child: Icon(Icons.skip_next_outlined)),
                               Text(
-                                "Frage\nüberspringen",
+                                "跳过",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(height: 1.2),
+                                style: TextStyle(height: 1),
                               ),
                             ],
                           ),
@@ -1842,37 +1033,4 @@ class MyClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
-}
-
-class IntroScreenColumn extends StatelessWidget {
-  const IntroScreenColumn({super.key, required this.child});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Column(
-        children: [
-          Container(
-            color: Colors.transparent,
-            child: SizedBox(
-              height: constraints.maxHeight - INTRO_BOTTOM,
-            ),
-          ),
-          Container(
-            color: Colors.white,
-            child: SizedBox(
-              height: INTRO_BOTTOM,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-                  child: SizedBox(width: double.maxFinite, child: child),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    });
-  }
 }
