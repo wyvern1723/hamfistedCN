@@ -1,4 +1,4 @@
-# HamfistedCN [WIP|尚未完成]
+# HamfistedCN
 
 <p align='center'>
  <img src='craft/header.png' width='100%'/>
@@ -21,9 +21,9 @@ Thanks to the fact that the original app was developed using the cross-platform 
 
 ## **Changes**
 
-- Replace the original German question bank with the Chinese question bank. The latest (2024-06-06) version is v20211022 released by CARC.
+- Replace the original German question bank with the Chinese question bank. The latest (2024-06-07) version is v20211022 released by CARC.
 
-- Deleted the intropage.
+- Deleted the IntroScreen.
 
 - Change the application language to Chinese.
 
