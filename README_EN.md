@@ -17,7 +17,7 @@ Thanks to the fact that the original app was developed using the cross-platform 
 
 ## **Download**
 
-[<img src="https://img.shields.io/github/v/release/specht/hamfisted?label=Github%20Releases" alt="Github%20Release">](https://github.com/specht/hamfisted/releases/latest)
+[<img src="https://img.shields.io/github/v/release/wyvern1723/hamfistedCN?label=Github%20Releases" alt="Github%20Release">](https://github.com/wyvern1723/hamfistedCN/releases/latest)
 
 ## **Changes**
 
@@ -28,9 +28,9 @@ Thanks to the fact that the original app was developed using the cross-platform 
 - Change the application language to Chinese.
 
 
-## **Screenshot**
+## **Screenshots**
 <p align='left'>
- <img src='craft/screenshots/android/phone/01.png' width='32%'/>
- <img src='craft/screenshots/android/phone/02.png' width='32%'/>
- <img src='craft/screenshots/android/phone/03.png' width='32%'/>
+ <img src='craft/screenshots/android/Screenshot_1_HamfistedCN.png' width='32%'/>
+ <img src='craft/screenshots/android/Screenshot_2_HamfistedCN.png' width='32%'/>
+ <img src='craft/screenshots/android/Screenshot_3_HamfistedCN.png' width='32%'/>
 </p>
