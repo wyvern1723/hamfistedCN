@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       title: 'hamfistedCN',
       debugShowCheckedModeBanner: false,
@@ -924,7 +924,7 @@ class _BottomMenuState extends State<BottomMenu> {
                               },
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 8, left: 8, right: 8, bottom: 16),
+                              top: 8, left: 8, right: 8, bottom: 18),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -958,7 +958,7 @@ class _BottomMenuState extends State<BottomMenu> {
                               : 1.0,
                           child: const Padding(
                             padding: EdgeInsets.only(
-                                top: 8, left: 8, right: 8, bottom: 16),
+                                top: 8, left: 8, right: 8, bottom: 18),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -986,7 +986,7 @@ class _BottomMenuState extends State<BottomMenu> {
                               },
                         child: const Padding(
                           padding: EdgeInsets.only(
-                              top: 8, left: 8, right: 8, bottom: 16),
+                              top: 8, left: 8, right: 8, bottom: 18),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
