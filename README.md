@@ -1,4 +1,4 @@
-# HamfistedCN [WIP|尚未完成]
+# HamfistedCN
 
 <p align='center'>
  <img src='craft/header.png' width='100%'/>
@@ -21,7 +21,7 @@ hamfisted 原为一款开源的德国业余无线电考试题库学习软件。�
 
 ## **修改**
 
-- 把原德国题库替换为中国题库，最新（2024-06-06）版本是 CARC 发布的 v20211022
+- 把原德国题库替换为中国题库，最新（2024-06-07）版本是 CARC 发布的 v20211022
 
 - 删除了介绍界面
 
